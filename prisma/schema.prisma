@@ -13,17 +13,91 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum userRole {
+  STUDENT
+  ADMIN
+}
+
 model User {
   id String @id @default(uuid()) @db.Uuid
+
+  contentProgress contentProgress[]
+  moduleProgress moduleProgress[]
 
   name String
   img_url String?
   email String @unique
   hash String
   verified_at DateTime?
+  role  userRole @default(STUDENT)
+  coin Int @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
   @@map("users")
+}
+
+model Module {
+  id String @id @default(uuid()) @db.Uuid
+
+  materials Material[]
+  progress moduleProgress[]
+
+  name String
+  description String
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("modules")
+}
+
+model Material {
+  id String @id @default(uuid()) @db.Uuid
+  moduleId String @db.Uuid
+
+  completed contentProgress[]
+
+  module  Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  name String
+  title String
+  content String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("materials")
+}
+
+
+model contentProgress {
+  id String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  materialId String @db.Uuid
+
+  material Material? @relation(fields: [materialId], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  completed Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@map("content_progress")
+}
+
+model moduleProgress {
+  id String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  moduleId String @db.Uuid
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module Module? @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  progress Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
