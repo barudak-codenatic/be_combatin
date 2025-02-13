@@ -1,7 +1,6 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { User } from '@prisma/client';
 import { UserDto } from './dto';
 
 @Injectable()
@@ -26,7 +25,6 @@ export class UserService {
                     await this.cloudinary.destroyFile(publicId);
                 }
             }
-    
             if (file) {
                 const uploadResult = await this.cloudinary.uploadFile(file);
                 imageUrl = uploadResult.secure_url;
@@ -47,5 +45,35 @@ export class UserService {
             throw error;
         }
     }
-    
+
+    async searchByName(name:string) {
+        const user = await this.prisma.user.findMany({
+            where : {
+                name : {
+                    contains : name,
+                    mode : 'insensitive'
+                },
+            },
+            select : {
+                id : true,
+                name : true,
+                img_url : true
+            }
+        })
+
+        if (!user) throw new NotFoundException('nama tidak ditemukan')
+        return user
+    }
+
+    async getById(id:string) {
+        const user = await this.prisma.user.findUnique({
+            where : {
+                id
+            }
+        })
+
+        if (!user) throw new NotFoundException('user tidak ditemukan')
+        const {hash:_, ...userWithoutHash} = user
+        return userWithoutHash
+    }
 }

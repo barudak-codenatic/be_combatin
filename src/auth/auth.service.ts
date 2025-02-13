@@ -135,14 +135,14 @@ export class AuthService {
 
     async signToken(
         userId: string,
-        email: string
+        email: string,
     ) {
         const payload = { sub : userId, email : email }
 
         const accessToken = await this.jwt.signAsync(payload, { expiresIn: '15m' });
         const refreshToken = await this.jwt.signAsync(payload, { expiresIn: '7d' });
 
-        return { accessToken, refreshToken }
+        return { accessToken, refreshToken, userId, email }
     }
 
     async refreshToken(email:string, sub:string) {
