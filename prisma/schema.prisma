@@ -23,6 +23,8 @@ model User {
 
   contentProgress contentProgress[]
   moduleProgress moduleProgress[]
+  friendshipsSent Friendship[] @relation("FriendshipRequester")
+  friendshipsReceived Friendship[] @relation("FriendshipRecipient")
 
   name String
   img_url String?
@@ -33,22 +35,49 @@ model User {
   coin Int @default(0)
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@map("users")
 }
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  BLOCKED
+}
+
+model Friendship {
+  id String @id @default(uuid()) @db.Uuid
+  requesterId String  @db.Uuid
+  recipientId String  @db.Uuid
+  status FriendshipStatus @default(PENDING)
+
+  requester User @relation("FriendshipRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  recipient User @relation("FriendshipRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([requesterId, recipientId]) 
+  
+  @@map("friendship")
+}
+
 
 model Module {
   id String @id @default(uuid()) @db.Uuid
 
   materials Material[]
+  test Test[]
   progress moduleProgress[]
 
   name String
+  img_url String?
   description String
   
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@map("modules")
 }
@@ -61,29 +90,48 @@ model Material {
 
   module  Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
 
-  name String
   title String
   content String
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@map("materials")
+}
+
+model Test {
+  id String @id @default(uuid()) @db.Uuid
+  moduleId String @db.Uuid
+
+  completed contentProgress[]
+
+  module  Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  title String
+  description String
+  config Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("test")
 }
 
 
 model contentProgress {
   id String @id @default(uuid()) @db.Uuid
   userId String @db.Uuid
-  materialId String @db.Uuid
+  materialId String? @db.Uuid
+  testId String? @db.Uuid
 
   material Material? @relation(fields: [materialId], references: [id], onDelete: Cascade)
+  test Test? @relation(fields: [testId], references: [id], onDelete: Cascade)
   user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   completed Boolean @default(false)
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@map("content_progress")
 }
@@ -99,5 +147,7 @@ model moduleProgress {
   progress Float
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("module_progress")
 }
