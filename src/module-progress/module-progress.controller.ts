@@ -1,4 +1,8 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
+import { JwtGuard } from 'src/auth/guard';
 
 @Controller('module-progress')
-export class ModuleProgressController {}
+@UseGuards(JwtGuard)
+export class ModuleProgressController {
+    
+}

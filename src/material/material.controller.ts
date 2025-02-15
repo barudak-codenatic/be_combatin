@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { MaterialService } from './material.service';
 import { materialDto, updateMaterialDto } from './dto';
 import { Roles } from 'src/auth/decorator';
+import { JwtGuard, RolesGuard } from 'src/auth/guard';
 
 @Controller('materials')
+@UseGuards(JwtGuard, RolesGuard)
 export class MaterialController {
     constructor(private material : MaterialService) {}
 

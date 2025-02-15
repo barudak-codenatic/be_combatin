@@ -16,6 +16,7 @@ import { MaterialModule } from './material/material.module';
 import { ModuleModule } from './module/module.module';
 import { ContentProgressModule } from './content-progress/content-progress.module';
 import { ModuleProgressModule } from './module-progress/module-progress.module';
+import { TestModule } from './test/test.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { ModuleProgressModule } from './module-progress/module-progress.module';
     ModuleModule,
     ContentProgressModule,
     ModuleProgressModule,
+    TestModule,
   ],
   providers: [GameGateway, OllamaService, OllamaGateway, ModuleService, MaterialService],
   controllers: [ModuleController, MaterialController],
