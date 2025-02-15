@@ -15,7 +15,6 @@ export class AuthController {
 
     @Post('signin')
     signin(@Body() dto:SigninDto) {
-        console.log(dto)
         return this.authService.signin(dto)
     }
 
