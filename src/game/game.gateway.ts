@@ -27,6 +27,8 @@ export class GameGateway {
       isReady : false,
       socketId : client.id
     }
+
+    console.log(data)
     
     this.players.set(client.id, player)
 
