@@ -7,14 +7,14 @@ import { GetUser } from 'src/auth/decorator';
 @Controller('content-progress')
 @UseGuards(JwtGuard)
 export class ContentProgressController {
-    constructor(private contentProgress : ContentProgressService) {}
+  constructor(private contentProgress: ContentProgressService) {}
 
-    @Post(':moduleId')
-    createContentProgress(
-        @Body() dto : contentProgressDto,
-        @GetUser('id') userId : string,
-        @Param('moduleId') moduleId : string
-    ) {
-        return this.contentProgress.createContentProgress(userId, moduleId, dto)
-    }
+  @Post(':moduleId')
+  createContentProgress(
+    @Body() dto: contentProgressDto,
+    @GetUser('id') userId: string,
+    @Param('moduleId') moduleId: string,
+  ) {
+    return this.contentProgress.createContentProgress(userId, moduleId, dto);
+  }
 }

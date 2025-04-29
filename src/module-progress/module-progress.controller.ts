@@ -3,6 +3,4 @@ import { JwtGuard } from 'src/auth/guard';
 
 @Controller('module-progress')
 @UseGuards(JwtGuard)
-export class ModuleProgressController {
-    
-}
+export class ModuleProgressController {}

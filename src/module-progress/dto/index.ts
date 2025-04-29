@@ -1,1 +1,1 @@
-export * from './module-progress.dto'
+export * from './module-progress.dto';

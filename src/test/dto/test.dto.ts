@@ -1,30 +1,30 @@
-import { isObject, IsObject, IsOptional, IsString } from "class-validator";
+import { IsArray, isObject, IsObject, IsOptional, IsString } from 'class-validator';
 
 interface Config {
-    mode : string,
-    config : string[]
+  mode: string;
+  config: string[];
 }
 
 export class TestDto {
-    @IsString()
-    title : string;
+  @IsString()
+  title: string;
 
-    @IsString()
-    description : string;
+  @IsString()
+  description: string;
 
-    @IsObject()
-    config : any;
+  @IsArray()
+  config: any;
 }
 
 export class UpdateTestDto {
-    @IsOptional()
-    @IsString()
-    title : string;
-    
-    @IsOptional()
-    @IsString()
-    description : string;
+  @IsOptional()
+  @IsString()
+  title: string;
 
-    @IsOptional()
-    config : any;
+  @IsOptional()
+  @IsString()
+  description: string;
+
+  @IsOptional()
+  config: any;
 }

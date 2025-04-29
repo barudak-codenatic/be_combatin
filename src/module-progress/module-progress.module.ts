@@ -4,6 +4,6 @@ import { ModuleProgressController } from './module-progress.controller';
 
 @Module({
   providers: [ModuleProgressService],
-  controllers: [ModuleProgressController]
+  controllers: [ModuleProgressController],
 })
 export class ModuleProgressModule {}

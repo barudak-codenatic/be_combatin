@@ -1,1 +1,1 @@
-export * from './module.dto'
+export * from './module.dto';

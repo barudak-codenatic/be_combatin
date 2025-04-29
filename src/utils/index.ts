@@ -1,1 +1,1 @@
-export * from './file-upload.utils'
+export * from './file-upload.utils';

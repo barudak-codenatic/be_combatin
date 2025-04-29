@@ -1,19 +1,19 @@
-import { IsOptional, IsString } from "class-validator";
+import { IsOptional, IsString } from 'class-validator';
 
 export class materialDto {
-    @IsString()
-    title : string;
+  @IsString()
+  title: string;
 
-    @IsString()
-    content : string;
+  @IsString()
+  content: string;
 }
 
 export class updateMaterialDto {
-    @IsOptional()
-    @IsString()
-    title : string;
-    
-    @IsOptional()
-    @IsString()
-    content : string;
+  @IsOptional()
+  @IsString()
+  title: string;
+
+  @IsOptional()
+  @IsString()
+  content: string;
 }

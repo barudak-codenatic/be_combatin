@@ -20,21 +20,21 @@ import { TestModule } from './test/test.module';
 
 @Module({
   imports: [
-    AuthModule, 
-    UserModule, 
+    AuthModule,
+    UserModule,
     PrismaModule,
     ConfigModule.forRoot({
       envFilePath: '.env',
-      isGlobal: true
+      isGlobal: true,
     }),
     MailerModule.forRoot({
       transport: {
         host: process.env.EMAIL_HOST,
         auth: {
           user: process.env.EMAIL_USERNAME,
-          pass: process.env.EMAIL_PASSWORD
-        }
-      }
+          pass: process.env.EMAIL_PASSWORD,
+        },
+      },
     }),
     CloudinaryModule,
     MaterialModule,
@@ -43,7 +43,13 @@ import { TestModule } from './test/test.module';
     ModuleProgressModule,
     TestModule,
   ],
-  providers: [GameGateway, OllamaService, OllamaGateway, ModuleService, MaterialService],
+  providers: [
+    GameGateway,
+    OllamaService,
+    OllamaGateway,
+    ModuleService,
+    MaterialService,
+  ],
   controllers: [ModuleController, MaterialController],
 })
 export class AppModule {}

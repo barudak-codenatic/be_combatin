@@ -1,1 +1,1 @@
-export * from './content-progress.dto'
+export * from './content-progress.dto';

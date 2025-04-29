@@ -6,6 +6,6 @@ import { ModuleModule } from 'src/module/module.module';
 @Module({
   providers: [ContentProgressService],
   controllers: [ContentProgressController],
-  imports : [ModuleModule]
+  imports: [ModuleModule],
 })
 export class ContentProgressModule {}

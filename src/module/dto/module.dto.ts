@@ -1,19 +1,19 @@
-import { IsOptional, IsString } from "class-validator";
+import { IsOptional, IsString } from 'class-validator';
 
 export class moduleDto {
-    @IsString()
-    name : string
+  @IsString()
+  name: string;
 
-    @IsString()
-    description : string
+  @IsString()
+  description: string;
 }
 
 export class updateModuleDto {
-    @IsString()
-    @IsOptional()
-    name : string
-    
-    @IsString()
-    @IsOptional()
-    description : string
+  @IsString()
+  @IsOptional()
+  name: string;
+
+  @IsString()
+  @IsOptional()
+  description: string;
 }

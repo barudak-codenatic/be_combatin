@@ -1,51 +1,56 @@
-import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import {
+  ConnectedSocket,
+  MessageBody,
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+} from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { GameRoom, Player } from './types/game.type';
 import { v4 as uuidv4 } from 'uuid';
 
-
 @WebSocketGateway({
-  cors : {
-    origin : '*'
-  }
+  cors: {
+    origin: '*',
+  },
 })
 export class GameGateway {
   @WebSocketServer()
-  server : Server;
+  server: Server;
 
-  private players : Map<string, Player> = new Map()
-  private gameRooms : Map<string, GameRoom> = new Map()
+  private players: Map<string, Player> = new Map();
+  private gameRooms: Map<string, GameRoom> = new Map();
 
   @SubscribeMessage('register')
   handleRegister(
-    @ConnectedSocket() client : Socket,
-    @MessageBody() data : { userId : string, name : string }
+    @ConnectedSocket() client: Socket,
+    @MessageBody() data: { userId: string; name: string },
   ) {
-    const player : Player = {
-      id : data.userId,
-      name : data.name,
-      isReady : false,
-      socketId : client.id
-    }
-    
-    this.players.set(client.id, player)
+    const player: Player = {
+      id: data.userId,
+      name: data.name,
+      isReady: false,
+      socketId: client.id,
+    };
+
+    this.players.set(client.id, player);
 
     client.emit('registered', {
-      playerId : player.id,
-      playerName : player.name
-    })
+      playerId: player.id,
+      playerName: player.name,
+    });
 
-    this.server.emit('playerList', Array.from(this.players.values()))
+    this.server.emit('playerList', Array.from(this.players.values()));
   }
 
   @SubscribeMessage('challengePlayer')
   handleChallenge(
     @ConnectedSocket() client: Socket,
-    @MessageBody() data: { targetPlayerId: string }
+    @MessageBody() data: { targetPlayerId: string },
   ) {
     const challenger = this.players.get(client.id);
     const targetPlayer = Array.from(this.players.values()).find(
-      (p) => p.id === data.targetPlayerId
+      (p) => p.id === data.targetPlayerId,
     );
 
     if (!challenger || !targetPlayer) {
@@ -88,7 +93,7 @@ export class GameGateway {
   @SubscribeMessage('acceptChallenge')
   handleAcceptChallenge(
     @ConnectedSocket() client: Socket,
-    @MessageBody() data: { roomId: string }
+    @MessageBody() data: { roomId: string },
   ) {
     const gameRoom = this.gameRooms.get(data.roomId);
     if (!gameRoom) {
@@ -97,13 +102,13 @@ export class GameGateway {
     }
 
     gameRoom.status = 'playing';
-    
+
     // Join both players to the room
     gameRoom.players.forEach((player) => {
       this.server.to(player.socketId).emit('gameStarted', {
         roomId: gameRoom.id,
         gameConfig: gameRoom.gameConfig,
-        players: gameRoom.players.map(p => ({
+        players: gameRoom.players.map((p) => ({
           id: p.id,
           name: p.name,
         })),
@@ -114,13 +119,13 @@ export class GameGateway {
   @SubscribeMessage('gameUpdate')
   handleGameUpdate(
     @ConnectedSocket() client: Socket,
-    @MessageBody() data: { roomId: string; score: number }
+    @MessageBody() data: { roomId: string; score: number },
   ) {
     const gameRoom = this.gameRooms.get(data.roomId);
     if (!gameRoom) return;
 
     // Broadcast score update to other player
-    const otherPlayer = gameRoom.players.find(p => p.socketId !== client.id);
+    const otherPlayer = gameRoom.players.find((p) => p.socketId !== client.id);
     if (otherPlayer) {
       this.server.to(otherPlayer.socketId).emit('opponentUpdate', {
         score: data.score,
@@ -131,13 +136,13 @@ export class GameGateway {
   @SubscribeMessage('gameEnd')
   handleGameEnd(
     @ConnectedSocket() client: Socket,
-    @MessageBody() data: { roomId: string; finalScore: number }
+    @MessageBody() data: { roomId: string; finalScore: number },
   ) {
     const gameRoom = this.gameRooms.get(data.roomId);
     if (!gameRoom) return;
 
     gameRoom.status = 'finished';
-    
+
     // Notify both players of game end
     gameRoom.players.forEach((player) => {
       this.server.to(player.socketId).emit('gameEnded', {
@@ -155,11 +160,11 @@ export class GameGateway {
     if (player) {
       this.players.delete(client.id);
       this.server.emit('playerList', Array.from(this.players.values()));
-      
+
       // Handle any active game rooms
       for (const [roomId, room] of this.gameRooms.entries()) {
-        if (room.players.some(p => p.socketId === client.id)) {
-          room.players.forEach(p => {
+        if (room.players.some((p) => p.socketId === client.id)) {
+          room.players.forEach((p) => {
             if (p.socketId !== client.id) {
               this.server.to(p.socketId).emit('opponentDisconnected');
             }

@@ -3,7 +3,7 @@ import { MaterialService } from './material.service';
 import { MaterialController } from './material.controller';
 
 @Module({
-    controllers: [MaterialController],
-    providers: [MaterialService]
+  controllers: [MaterialController],
+  providers: [MaterialService],
 })
 export class MaterialModule {}

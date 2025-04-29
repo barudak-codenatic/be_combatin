@@ -1,1 +1,1 @@
-export * from './one-or-none.decorator'
+export * from './one-or-none.decorator';

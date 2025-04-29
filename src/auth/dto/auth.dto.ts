@@ -1,72 +1,76 @@
-import { IsEmail, IsNotEmpty, IsString, IsStrongPassword } from "class-validator";
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  IsStrongPassword,
+} from 'class-validator';
 
 export class SignupDto {
-    @IsString()
-    @IsNotEmpty()
-    name: string;
+  @IsString()
+  @IsNotEmpty()
+  name: string;
 
-    @IsEmail()
-    @IsNotEmpty()
-    email : string;
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
 
-    @IsStrongPassword()
-    @IsNotEmpty()
-    password : string;
+  @IsStrongPassword()
+  @IsNotEmpty()
+  password: string;
 }
 
 export class SendOtpDto {
-    @IsString()
-    @IsNotEmpty()
-    userId: string;
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
 }
 
 export class VerifyDto {
-    @IsString()
-    @IsNotEmpty()
-    userId: string;
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
 
-    @IsString()
-    @IsNotEmpty()
-    otp: string;
+  @IsString()
+  @IsNotEmpty()
+  otp: string;
 }
 
 export class SigninDto {
-    @IsEmail()
-    @IsNotEmpty()
-    email : string;
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
 
-    @IsString()
-    @IsNotEmpty()
-    password : string;
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }
 
 export class ResetPasswordDto {
-    @IsStrongPassword()
-    @IsNotEmpty()
-    lastPassword : string;
+  @IsStrongPassword()
+  @IsNotEmpty()
+  lastPassword: string;
 
-    @IsString()
-    @IsNotEmpty()
-    oldPassword : string;
+  @IsString()
+  @IsNotEmpty()
+  oldPassword: string;
 }
 
 export class ForgotPasswordDto {
-    @IsStrongPassword()
-    @IsNotEmpty()
-    password : string;
+  @IsStrongPassword()
+  @IsNotEmpty()
+  password: string;
 
-    @IsString()
-    @IsNotEmpty()
-    otp : string;
+  @IsString()
+  @IsNotEmpty()
+  otp: string;
 
-    @IsString()
-    @IsNotEmpty()
-    email : string;
+  @IsString()
+  @IsNotEmpty()
+  email: string;
 }
 
 export class SendOtpForgotDto {
-    @IsEmail()
-    @IsNotEmpty()
-    email : string;
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
 }
-

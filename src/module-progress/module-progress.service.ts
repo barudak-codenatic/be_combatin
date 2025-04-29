@@ -3,11 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ModuleProgressService {
-    constructor(
-        private prisma : PrismaService,
-    ) {}
+  constructor(private prisma: PrismaService) {}
 
-    async createModuleProgress(moduleId) {
-
-    }
+  async createModuleProgress(moduleId) {}
 }
