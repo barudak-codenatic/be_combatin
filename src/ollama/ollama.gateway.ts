@@ -7,6 +7,7 @@ import {
 } from '@nestjs/websockets';
 import axios from 'axios';
 import { Server, Socket } from 'socket.io';
+import { OllamaService } from './ollama.service';
 
 @WebSocketGateway({
   cors: {
@@ -18,23 +19,26 @@ export class OllamaGateway {
   @WebSocketServer()
   server: Server;
 
+  constructor(private readonly ollama: OllamaService) {}
+
   @SubscribeMessage('generate')
   async handleGenerate(
     @ConnectedSocket() client: Socket,
     @MessageBody() prompt: string,
   ) {
-    console.log(prompt);
+    const newPrompt = await this.ollama.indexMAterials(prompt);
+    console.log(newPrompt);
+
     const ollamaUrl = 'http://localhost:11434/api/generate';
     const response = await axios.post(
       ollamaUrl,
       {
-        model: 'gemma3:4b',
-        prompt,
+        model: 'deepseek-r1:1.5b',
+        prompt: newPrompt,
         stream: true,
       },
       { responseType: 'stream' },
     );
-
     response.data.on('data', (chunck) => {
       const data = chunck.toString();
       try {

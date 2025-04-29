@@ -1,4 +1,10 @@
-import { IsArray, isObject, IsObject, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  isObject,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 interface Config {
   mode: string;

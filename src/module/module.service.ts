@@ -66,7 +66,7 @@ export class ModuleService {
   async createModule(dto: moduleDto, file?: Express.Multer.File) {
     try {
       let img_url: null | string = null;
-      console.log(file)
+      console.log(file);
       if (file) {
         const uploadResult = await this.cloudinary.uploadFile(file);
         img_url = uploadResult.secure_url;

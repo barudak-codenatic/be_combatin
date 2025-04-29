@@ -17,6 +17,7 @@ import { ModuleModule } from './module/module.module';
 import { ContentProgressModule } from './content-progress/content-progress.module';
 import { ModuleProgressModule } from './module-progress/module-progress.module';
 import { TestModule } from './test/test.module';
+// import { OllamaModule } from './ollama/ollama.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { TestModule } from './test/test.module';
     ContentProgressModule,
     ModuleProgressModule,
     TestModule,
+    // OllamaModule,
   ],
   providers: [
     GameGateway,
