@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -26,6 +27,11 @@ export class ModuleController {
   @Get()
   getAllModule() {
     return this.module.getAllModule();
+  }
+  
+  @Get('search')
+  searchModules(@Query('name') name: string) {
+    return this.module.searchModules(name);
   }
 
   @Get(':id')
@@ -69,4 +75,5 @@ export class ModuleController {
   deleteModule(@Param('id') moduleId: string) {
     return this.module.deleteModule(moduleId);
   }
+
 }

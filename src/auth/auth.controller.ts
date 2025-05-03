@@ -8,6 +8,7 @@ import {
   ResetPasswordDto,
   SendOtpForgotDto,
   ForgotPasswordDto,
+  RefreshDto,
 } from './dto';
 import { JwtGuard } from './guard';
 import { GetUser } from './decorator';
@@ -36,10 +37,9 @@ export class AuthController {
     return this.authService.verify(dto);
   }
 
-  @UseGuards(JwtGuard)
   @Post('refresh')
-  refresh(@GetUser('email') email: string, @GetUser('id') userId: string) {
-    return this.authService.refreshToken(email, userId);
+  refresh(@Body() dto: RefreshDto) {
+    return this.authService.refreshToken(dto);
   }
 
   @UseGuards(JwtGuard)

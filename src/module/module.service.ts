@@ -164,4 +164,18 @@ export class ModuleService {
       throw error;
     }
   }
+
+  async searchModules(name: string) {
+    const modules = await this.prisma.module.findMany({
+      where: {
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        },
+      },
+    });
+
+    if (!modules) throw new NotFoundException('Module tidak ditemukan');
+    return modules;
+  }
 }

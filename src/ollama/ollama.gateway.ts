@@ -26,14 +26,14 @@ export class OllamaGateway {
     @ConnectedSocket() client: Socket,
     @MessageBody() prompt: string,
   ) {
-    const newPrompt = await this.ollama.indexMAterials(prompt);
-    console.log(newPrompt);
+    const { newPrompt, source_url, title } =
+      await this.ollama.indexMAterials(prompt);
 
     const ollamaUrl = 'http://localhost:11434/api/generate';
     const response = await axios.post(
       ollamaUrl,
       {
-        model: 'deepseek-r1:1.5b',
+        model: 'gemma3:4b',
         prompt: newPrompt,
         stream: true,
       },
@@ -50,6 +50,7 @@ export class OllamaGateway {
     });
     response.data.on('end', () => {
       client.emit('response', '[DONE]');
+      client.emit('source', { title, url: source_url });
     });
   }
 }

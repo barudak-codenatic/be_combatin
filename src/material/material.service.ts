@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { materialDto } from './dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -16,6 +12,13 @@ export class MaterialService {
       where: {
         id: materialId,
       },
+      include : {
+        module : {
+          select : {
+            name : true
+          }
+        }
+      }
     });
     if (!material) throw new NotFoundException('Materi tidak ditemukan');
     return material;

@@ -14,6 +14,7 @@ import {
   SigninDto,
   ResetPasswordDto,
   ForgotPasswordDto,
+  RefreshDto,
 } from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -159,10 +160,18 @@ export class AuthService {
     return { accessToken, refreshToken, userId, email, userRole };
   }
 
-  async refreshToken(email: string, sub: string) {
-    const newAccessToken = this.jwt.sign({ email, sub }, { expiresIn: '15m' });
-
-    return { accessToken: newAccessToken };
+  async refreshToken(refreshTokenDto: RefreshDto) {
+    const { refreshToken } = refreshTokenDto;
+    try {
+      const payload = await this.jwt.verifyAsync(refreshToken);
+      const newAccessToken = await this.jwt.signAsync(
+        { email: payload.email, sub: payload.sub },
+        { expiresIn: '15m' }
+      );
+      return { accessToken: newAccessToken };
+    } catch (err) {
+      throw new UnauthorizedException('Invalid or expired refresh token');
+    }
   }
 
   async resetPassword(

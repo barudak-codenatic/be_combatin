@@ -26,7 +26,6 @@ export class GameGateway {
     @ConnectedSocket() client: Socket,
     @MessageBody() data: { userId: string; name: string },
   ) {
-<<<<<<< HEAD
     const player: Player = {
       id: data.userId,
       name: data.name,
@@ -34,19 +33,9 @@ export class GameGateway {
       socketId: client.id,
     };
 
-    this.players.set(client.id, player);
-=======
-    const player : Player = {
-      id : data.userId,
-      name : data.name,
-      isReady : false,
-      socketId : client.id
-    }
+    console.log(data);
 
-    console.log(data)
-    
-    this.players.set(client.id, player)
->>>>>>> 50b0e7afd3586e84fe6f4313eb9eb7606fa3b286
+    this.players.set(client.id, player);
 
     client.emit('registered', {
       playerId: player.id,

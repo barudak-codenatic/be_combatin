@@ -74,3 +74,9 @@ export class SendOtpForgotDto {
   @IsNotEmpty()
   email: string;
 }
+
+export class RefreshDto {
+  @IsString()
+  @IsNotEmpty()
+  refreshToken: string;
+}

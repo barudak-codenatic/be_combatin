@@ -18,6 +18,7 @@ import { ContentProgressModule } from './content-progress/content-progress.modul
 import { ModuleProgressModule } from './module-progress/module-progress.module';
 import { TestModule } from './test/test.module';
 // import { OllamaModule } from './ollama/ollama.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { TestModule } from './test/test.module';
     ContentProgressModule,
     ModuleProgressModule,
     TestModule,
+    SearchModule,
     // OllamaModule,
   ],
   providers: [
