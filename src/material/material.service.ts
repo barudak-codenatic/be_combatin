@@ -12,13 +12,13 @@ export class MaterialService {
       where: {
         id: materialId,
       },
-      include : {
-        module : {
-          select : {
-            name : true
-          }
-        }
-      }
+      include: {
+        module: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
     if (!material) throw new NotFoundException('Materi tidak ditemukan');
     return material;

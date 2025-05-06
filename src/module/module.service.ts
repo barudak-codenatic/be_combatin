@@ -15,8 +15,16 @@ export class ModuleService {
     private cloudinary: CloudinaryService,
   ) {}
 
-  async getAllModule() {
-    const modules = await this.prisma.module.findMany();
+  async getAllModule(userId: string) {
+    const modules = await this.prisma.module.findMany({
+      include: {
+        progress: {
+          where: {
+            userId,
+          },
+        },
+      },
+    });
     return modules;
   }
 
@@ -64,24 +72,20 @@ export class ModuleService {
   }
 
   async createModule(dto: moduleDto, file?: Express.Multer.File) {
-    try {
-      let img_url: null | string = null;
-      console.log(file);
-      if (file) {
-        const uploadResult = await this.cloudinary.uploadFile(file);
-        img_url = uploadResult.secure_url;
-      }
-
-      await this.prisma.module.create({
-        data: {
-          img_url,
-          ...dto,
-        },
-      });
-      return { message: 'Berhasil menambahkan modul' };
-    } catch (error) {
-      throw error;
+    let img_url: null | string = null;
+    console.log(file);
+    if (file) {
+      const uploadResult = await this.cloudinary.uploadFile(file);
+      img_url = uploadResult.secure_url;
     }
+
+    await this.prisma.module.create({
+      data: {
+        img_url,
+        ...dto,
+      },
+    });
+    return { message: 'Berhasil menambahkan modul' };
   }
 
   async updateModule(

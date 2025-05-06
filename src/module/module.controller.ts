@@ -25,10 +25,10 @@ export class ModuleController {
   constructor(private module: ModuleService) {}
 
   @Get()
-  getAllModule() {
-    return this.module.getAllModule();
+  getAllModule(@GetUser('id') userId: string) {
+    return this.module.getAllModule(userId);
   }
-  
+
   @Get('search')
   searchModules(@Query('name') name: string) {
     return this.module.searchModules(name);
@@ -75,5 +75,4 @@ export class ModuleController {
   deleteModule(@Param('id') moduleId: string) {
     return this.module.deleteModule(moduleId);
   }
-
 }

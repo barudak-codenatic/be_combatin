@@ -166,7 +166,7 @@ export class AuthService {
       const payload = await this.jwt.verifyAsync(refreshToken);
       const newAccessToken = await this.jwt.signAsync(
         { email: payload.email, sub: payload.sub },
-        { expiresIn: '15m' }
+        { expiresIn: '15m' },
       );
       return { accessToken: newAccessToken };
     } catch (err) {
